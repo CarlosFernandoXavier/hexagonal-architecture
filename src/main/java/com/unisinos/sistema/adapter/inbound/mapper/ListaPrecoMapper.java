@@ -1,7 +1,7 @@
 package com.unisinos.sistema.adapter.inbound.mapper;
 
 import com.unisinos.sistema.adapter.inbound.model.request.ListaPrecoRequest;
-import com.unisinos.sistema.application.builder.PriceListBuilder;
+import com.unisinos.sistema.adapter.outbound.builder.PriceListBuilder;
 import com.unisinos.sistema.application.domain.ListaPreco;
 import com.unisinos.sistema.adapter.outbound.entity.ListaPrecoEntity;
 import org.springframework.util.ObjectUtils;

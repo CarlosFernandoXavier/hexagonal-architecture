@@ -3,7 +3,7 @@ package com.unisinos.sistema.adapter.inbound.mapper;
 import com.unisinos.sistema.adapter.inbound.model.FilialModel;
 import com.unisinos.sistema.adapter.inbound.model.request.FilialRequest;
 import com.unisinos.sistema.adapter.outbound.entity.SubsidiaryEntity;
-import com.unisinos.sistema.application.builder.SubsidiaryBuilder;
+import com.unisinos.sistema.adapter.outbound.builder.SubsidiaryBuilder;
 import com.unisinos.sistema.application.domain.Filial;
 import org.springframework.util.ObjectUtils;
 

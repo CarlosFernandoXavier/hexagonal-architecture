@@ -2,7 +2,7 @@ package com.unisinos.sistema.adapter.inbound.mapper;
 
 import com.unisinos.sistema.adapter.inbound.model.ItemEstoqueModel;
 import com.unisinos.sistema.adapter.inbound.model.request.ItemEstoqueRequest;
-import com.unisinos.sistema.application.builder.StockItemBuilder;
+import com.unisinos.sistema.adapter.outbound.builder.StockItemBuilder;
 import com.unisinos.sistema.application.domain.ItemEstoque;
 import com.unisinos.sistema.adapter.outbound.entity.ItemEstoqueEntity;
 import org.springframework.util.ObjectUtils;

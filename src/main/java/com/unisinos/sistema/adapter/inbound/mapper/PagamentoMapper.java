@@ -2,7 +2,7 @@ package com.unisinos.sistema.adapter.inbound.mapper;
 
 import com.unisinos.sistema.adapter.inbound.model.request.PagamentoRequest;
 import com.unisinos.sistema.adapter.outbound.entity.PagamentoEntity;
-import com.unisinos.sistema.application.builder.PaymentBuilder;
+import com.unisinos.sistema.adapter.outbound.builder.PaymentBuilder;
 import com.unisinos.sistema.application.domain.Pagamento;
 import com.unisinos.sistema.application.enumeration.FormaPagamentoEnum;
 import org.springframework.util.ObjectUtils;

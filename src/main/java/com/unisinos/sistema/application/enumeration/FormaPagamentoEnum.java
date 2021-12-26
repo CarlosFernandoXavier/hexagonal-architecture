@@ -1,10 +1,7 @@
 package com.unisinos.sistema.application.enumeration;
 
-import lombok.Getter;
-
 import java.util.EnumSet;
 
-@Getter
 public enum FormaPagamentoEnum {
     DINHEIRO("1"),
     VALE_PRESENTE("2"),
@@ -23,4 +20,13 @@ public enum FormaPagamentoEnum {
                 .findFirst()
                 .orElse(null);
     }
+
+    public String getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
+    }
+
 }
