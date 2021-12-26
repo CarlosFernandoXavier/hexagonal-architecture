@@ -1,4 +1,4 @@
-package com.unisinos.sistema.application.builder;
+package com.unisinos.sistema.adapter.outbound.builder;
 
 import com.unisinos.sistema.application.domain.Item;
 import com.unisinos.sistema.application.domain.ListaPreco;
