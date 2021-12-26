@@ -1,6 +1,7 @@
 package com.unisinos.sistema.adapter.inbound.mapper;
 
 import com.unisinos.sistema.adapter.inbound.model.request.ItemRequest;
+import com.unisinos.sistema.application.builder.ItemBuilder;
 import com.unisinos.sistema.application.domain.Item;
 import com.unisinos.sistema.adapter.outbound.entity.ItemEntity;
 import org.springframework.util.ObjectUtils;
@@ -40,7 +41,7 @@ public class ItemMapper {
     private static Item mapToResponse(ItemEntity itemEntity) {
         if (ObjectUtils.isEmpty(itemEntity)) return null;
 
-        return Item.builder()
+        return ItemBuilder.builder()
                 .codigo(itemEntity.getCodigo())
                 .nome(itemEntity.getNome())
                 .preco(itemEntity.getPreco())

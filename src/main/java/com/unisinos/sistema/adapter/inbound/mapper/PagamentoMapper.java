@@ -1,9 +1,10 @@
 package com.unisinos.sistema.adapter.inbound.mapper;
 
-import com.unisinos.sistema.application.enumeration.FormaPagamentoEnum;
 import com.unisinos.sistema.adapter.inbound.model.request.PagamentoRequest;
-import com.unisinos.sistema.application.domain.Pagamento;
 import com.unisinos.sistema.adapter.outbound.entity.PagamentoEntity;
+import com.unisinos.sistema.application.builder.PaymentBuilder;
+import com.unisinos.sistema.application.domain.Pagamento;
+import com.unisinos.sistema.application.enumeration.FormaPagamentoEnum;
 import org.springframework.util.ObjectUtils;
 
 import java.time.LocalDateTime;
@@ -25,7 +26,7 @@ public class PagamentoMapper {
     public static Pagamento mapToResponse(PagamentoEntity pagamentoEntity) {
         if (ObjectUtils.isEmpty(pagamentoEntity)) return null;
 
-        return Pagamento.builder()
+        return PaymentBuilder.builder()
                 .id(pagamentoEntity.getId())
                 .data(pagamentoEntity.getData())
                 .formaPagamento(FormaPagamentoEnum.getByCode(pagamentoEntity.getFormaPagamento()))

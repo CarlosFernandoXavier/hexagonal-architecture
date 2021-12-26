@@ -1,6 +1,7 @@
 package com.unisinos.sistema.adapter.inbound.mapper;
 
 import com.unisinos.sistema.adapter.inbound.model.request.ListaPrecoRequest;
+import com.unisinos.sistema.application.builder.PriceListBuilder;
 import com.unisinos.sistema.application.domain.ListaPreco;
 import com.unisinos.sistema.adapter.outbound.entity.ListaPrecoEntity;
 import org.springframework.util.ObjectUtils;
@@ -26,7 +27,7 @@ public class ListaPrecoMapper {
     public static ListaPreco mapToResponse(ListaPrecoEntity listaPrecoEntity) {
         if (ObjectUtils.isEmpty(listaPrecoEntity)) return null;
 
-        return ListaPreco.builder()
+        return PriceListBuilder.builder()
                 .id(listaPrecoEntity.getId())
                 .nome(listaPrecoEntity.getNome())
                 .dataInicial(listaPrecoEntity.getDataInicial())
