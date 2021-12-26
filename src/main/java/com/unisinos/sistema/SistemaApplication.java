@@ -1,6 +1,6 @@
 package com.unisinos.sistema;
 
-import com.unisinos.sistema.repository.ListaPrecoRepository;
+import com.unisinos.sistema.adapter.outbound.repository.ListaPrecoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
