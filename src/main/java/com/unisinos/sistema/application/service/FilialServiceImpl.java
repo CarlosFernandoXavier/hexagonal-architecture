@@ -7,7 +7,7 @@ import com.unisinos.sistema.adapter.inbound.model.request.SubsidiaryItemRequest;
 import com.unisinos.sistema.adapter.outbound.entity.SubsidiaryEntity;
 import com.unisinos.sistema.application.domain.Filial;
 import com.unisinos.sistema.application.port.FilialService;
-import com.unisinos.sistema.application.port.SequenceService;
+import com.unisinos.sistema.application.port.SequenceRepositoryPort;
 import com.unisinos.sistema.application.port.SubsidiaryRepositoryPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
@@ -20,11 +20,11 @@ import java.util.Optional;
 public class FilialServiceImpl implements FilialService {
 
     private SubsidiaryRepositoryPort filialRepository;
-    private SequenceService sequenceService;
+    private SequenceRepositoryPort sequenceRepositoryPort;
 
-    public FilialServiceImpl(SubsidiaryRepositoryPort filialRepository, SequenceService sequenceService) {
+    public FilialServiceImpl(SubsidiaryRepositoryPort filialRepository, SequenceRepositoryPort sequenceRepositoryPort) {
         this.filialRepository = filialRepository;
-        this.sequenceService = sequenceService;
+        this.sequenceRepositoryPort = sequenceRepositoryPort;
     }
 
     public List<SubsidiaryEntity> findAllSubsidiaries() {
@@ -49,7 +49,7 @@ public class FilialServiceImpl implements FilialService {
 
     public Filial createSubsidiary(FilialRequest filialRequest) {
         return FilialMapper.mapToResponse(filialRepository.save(FilialMapper
-                .mapToEntity(filialRequest, sequenceService.getSequence("filial_sequence"))));
+                .mapToEntity(filialRequest, sequenceRepositoryPort.getSequence("filial_sequence"))));
     }
 
     public Filial addItem(SubsidiaryItemRequest subsidiaryItemRequest) {

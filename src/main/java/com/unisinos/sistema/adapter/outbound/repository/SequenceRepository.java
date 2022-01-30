@@ -1,22 +1,22 @@
-package com.unisinos.sistema.application.service;
+package com.unisinos.sistema.adapter.outbound.repository;
 
 import com.unisinos.sistema.adapter.outbound.entity.SequenceEntity;
-import com.unisinos.sistema.application.port.SequenceService;
+import com.unisinos.sistema.application.port.SequenceRepositoryPort;
+import lombok.AllArgsConstructor;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
+import org.springframework.stereotype.Component;
 
 import java.util.Objects;
 
 import static org.springframework.data.mongodb.core.FindAndModifyOptions.options;
 
-public class SequenceServiceImpl implements SequenceService {
+@Component
+@AllArgsConstructor
+public class SequenceRepository implements SequenceRepositoryPort {
     private MongoOperations mongoOperations;
-
-    public SequenceServiceImpl(MongoOperations mongoOperations) {
-        this.mongoOperations = mongoOperations;
-    }
 
     public Integer getSequence(String sequenceName) {
         //Get a database sequence

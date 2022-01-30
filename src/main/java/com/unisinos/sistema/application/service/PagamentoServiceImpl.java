@@ -9,7 +9,7 @@ import com.unisinos.sistema.adapter.inbound.validator.PagamentoValidator;
 import com.unisinos.sistema.adapter.outbound.repository.PagamentoRepository;
 import com.unisinos.sistema.adapter.outbound.entity.PagamentoEntity;
 import com.unisinos.sistema.application.port.PagamentoService;
-import com.unisinos.sistema.application.port.SequenceService;
+import com.unisinos.sistema.application.port.SequenceRepositoryPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -18,11 +18,11 @@ import java.util.Optional;
 public class PagamentoServiceImpl implements PagamentoService {
 
     private PagamentoRepository pagamentoRepository;
-    private SequenceService sequenceServiceImpl;
+    private SequenceRepositoryPort sequenceRepositoryPortImpl;
 
-    public PagamentoServiceImpl(PagamentoRepository pagamentoRepository, SequenceService sequenceService) {
+    public PagamentoServiceImpl(PagamentoRepository pagamentoRepository, SequenceRepositoryPort sequenceRepositoryPort) {
         this.pagamentoRepository = pagamentoRepository;
-        this.sequenceServiceImpl = sequenceService;
+        this.sequenceRepositoryPortImpl = sequenceRepositoryPort;
     }
 
     public Pagamento payment(PagamentoRequest pagamentoRequest) {
@@ -30,7 +30,7 @@ public class PagamentoServiceImpl implements PagamentoService {
         PagamentoValidator.validateItemValue(pagamentoRequest.getItens(), pagamentoRequest.getValorTotal());
         PagamentoValidator.validateCupomValue(pagamentoRequest.getValorCupom(), pagamentoRequest.getValorTotal());
         PagamentoEntity pagamentoEntity = PagamentoMapper
-                .mapToEntity(pagamentoRequest, sequenceServiceImpl.getSequence("pagamento_sequence"));
+                .mapToEntity(pagamentoRequest, sequenceRepositoryPortImpl.getSequence("pagamento_sequence"));
 
         return PagamentoMapper.mapToResponse(pagamentoRepository.save(pagamentoEntity));
     }

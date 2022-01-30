@@ -1,5 +1,5 @@
 package com.unisinos.sistema.application.port;
 
-public interface SequenceService {
+public interface SequenceRepositoryPort {
     Integer getSequence(String sequenceName);
 }

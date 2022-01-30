@@ -14,7 +14,7 @@ import com.unisinos.sistema.adapter.outbound.entity.ItemEntity;
 import com.unisinos.sistema.adapter.outbound.entity.ListaPrecoEntity;
 import com.unisinos.sistema.application.port.FilialService;
 import com.unisinos.sistema.application.port.ListaPrecoService;
-import com.unisinos.sistema.application.port.SequenceService;
+import com.unisinos.sistema.application.port.SequenceRepositoryPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -30,13 +30,13 @@ import static com.unisinos.sistema.adapter.inbound.validator.ItemValidator.valid
 public class ListaPrecoServiceImpl implements ListaPrecoService {
 
     private ListaPrecoRepository listaPrecoRepository;
-    private SequenceService sequenceServiceImpl;
+    private SequenceRepositoryPort sequenceRepositoryPortImpl;
     private FilialService filialService;
 
-    public ListaPrecoServiceImpl(ListaPrecoRepository listaPrecoRepository, SequenceService sequenceService,
+    public ListaPrecoServiceImpl(ListaPrecoRepository listaPrecoRepository, SequenceRepositoryPort sequenceRepositoryPort,
                                  FilialService filialService) {
         this.listaPrecoRepository = listaPrecoRepository;
-        this.sequenceServiceImpl = sequenceService;
+        this.sequenceRepositoryPortImpl = sequenceRepositoryPort;
         this.filialService = filialService;
     }
 
@@ -51,7 +51,7 @@ public class ListaPrecoServiceImpl implements ListaPrecoService {
 
         ItemListaPrecoValidator.validateExistingItem(listaFiliais, listaPrecoRequest.getItens());
 
-        Integer sequence = sequenceServiceImpl.getSequence("lista_preco_sequence");
+        Integer sequence = sequenceRepositoryPortImpl.getSequence("lista_preco_sequence");
         var listaPrecoEntity = ListaPrecoMapper.mapToEntity(listaPrecoRequest, sequence);
 
         return ListaPrecoMapper.mapToResponse(listaPrecoRepository.save(listaPrecoEntity));
