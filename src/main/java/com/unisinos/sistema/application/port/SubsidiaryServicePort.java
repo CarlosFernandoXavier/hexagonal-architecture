@@ -7,7 +7,7 @@ import com.unisinos.sistema.adapter.outbound.entity.SubsidiaryEntity;
 
 import java.util.List;
 
-public interface FilialService {
+public interface SubsidiaryServicePort {
     List<SubsidiaryEntity> findAllSubsidiaries();
 
     List<Filial> getSubsidiary(Integer id);

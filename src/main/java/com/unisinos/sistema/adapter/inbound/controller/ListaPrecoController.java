@@ -1,10 +1,10 @@
 package com.unisinos.sistema.adapter.inbound.controller;
 
-import com.unisinos.sistema.adapter.inbound.configuration.SwaggerConfiguration;
+import com.unisinos.sistema.adapter.configuration.SwaggerConfiguration;
 import com.unisinos.sistema.adapter.inbound.exceptionhandler.ErrorMessage;
 import com.unisinos.sistema.adapter.inbound.model.request.ListaPrecoRequest;
 import com.unisinos.sistema.application.domain.ListaPreco;
-import com.unisinos.sistema.application.service.ListaPrecoServiceImpl;
+import com.unisinos.sistema.application.service.PriceListServiceImpl;
 import io.swagger.annotations.*;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,7 +20,7 @@ import java.util.List;
 @AllArgsConstructor
 public class ListaPrecoController {
 
-    ListaPrecoServiceImpl listaPrecoServiceImpl;
+    PriceListServiceImpl listaPrecoServiceImpl;
 
     @PostMapping("/adicionar")
     @ResponseStatus(HttpStatus.CREATED)

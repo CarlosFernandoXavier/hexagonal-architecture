@@ -6,7 +6,7 @@ import com.unisinos.sistema.adapter.inbound.model.request.FilialRequest;
 import com.unisinos.sistema.adapter.inbound.model.request.SubsidiaryItemRequest;
 import com.unisinos.sistema.adapter.outbound.entity.SubsidiaryEntity;
 import com.unisinos.sistema.application.domain.Filial;
-import com.unisinos.sistema.application.port.FilialService;
+import com.unisinos.sistema.application.port.SubsidiaryServicePort;
 import com.unisinos.sistema.application.port.SequenceRepositoryPort;
 import com.unisinos.sistema.application.port.SubsidiaryRepositoryPort;
 import org.springframework.http.HttpStatus;
@@ -17,12 +17,12 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-public class FilialServiceImpl implements FilialService {
+public class SubsidiaryServiceImpl implements SubsidiaryServicePort {
 
     private SubsidiaryRepositoryPort filialRepository;
     private SequenceRepositoryPort sequenceRepositoryPort;
 
-    public FilialServiceImpl(SubsidiaryRepositoryPort filialRepository, SequenceRepositoryPort sequenceRepositoryPort) {
+    public SubsidiaryServiceImpl(SubsidiaryRepositoryPort filialRepository, SequenceRepositoryPort sequenceRepositoryPort) {
         this.filialRepository = filialRepository;
         this.sequenceRepositoryPort = sequenceRepositoryPort;
     }

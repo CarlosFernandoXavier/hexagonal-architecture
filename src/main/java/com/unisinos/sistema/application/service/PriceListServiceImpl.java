@@ -12,8 +12,8 @@ import com.unisinos.sistema.adapter.outbound.entity.SubsidiaryEntity;
 import com.unisinos.sistema.adapter.outbound.repository.ListaPrecoRepository;
 import com.unisinos.sistema.adapter.outbound.entity.ItemEntity;
 import com.unisinos.sistema.adapter.outbound.entity.ListaPrecoEntity;
-import com.unisinos.sistema.application.port.FilialService;
-import com.unisinos.sistema.application.port.ListaPrecoService;
+import com.unisinos.sistema.application.port.SubsidiaryServicePort;
+import com.unisinos.sistema.application.port.PriceListServicePort;
 import com.unisinos.sistema.application.port.SequenceRepositoryPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
@@ -27,17 +27,18 @@ import java.util.stream.Collectors;
 import static com.unisinos.sistema.adapter.inbound.validator.ItemValidator.isExistingItem;
 import static com.unisinos.sistema.adapter.inbound.validator.ItemValidator.validateExistingItem;
 
-public class ListaPrecoServiceImpl implements ListaPrecoService {
+public class PriceListServiceImpl implements PriceListServicePort {
 
+    //TODO change this listaPrecoRepository so that the implementation switches to adapter layer
     private ListaPrecoRepository listaPrecoRepository;
     private SequenceRepositoryPort sequenceRepositoryPortImpl;
-    private FilialService filialService;
+    private SubsidiaryServicePort subsidiaryServicePort;
 
-    public ListaPrecoServiceImpl(ListaPrecoRepository listaPrecoRepository, SequenceRepositoryPort sequenceRepositoryPort,
-                                 FilialService filialService) {
+    public PriceListServiceImpl(ListaPrecoRepository listaPrecoRepository, SequenceRepositoryPort sequenceRepositoryPort,
+                                SubsidiaryServicePort subsidiaryServicePort) {
         this.listaPrecoRepository = listaPrecoRepository;
         this.sequenceRepositoryPortImpl = sequenceRepositoryPort;
-        this.filialService = filialService;
+        this.subsidiaryServicePort = subsidiaryServicePort;
     }
 
     public ListaPreco addPriceList(ListaPrecoRequest listaPrecoRequest) {
@@ -47,7 +48,7 @@ public class ListaPrecoServiceImpl implements ListaPrecoService {
 
         List<SubsidiaryEntity> listaFiliais = new ArrayList<>();
         listaPrecoRequest.getFiliais()
-                .forEach(idFilial -> listaFiliais.add(filialService.findSubsidiaryById(idFilial)));
+                .forEach(idFilial -> listaFiliais.add(subsidiaryServicePort.findSubsidiaryById(idFilial)));
 
         ItemListaPrecoValidator.validateExistingItem(listaFiliais, listaPrecoRequest.getItens());
 
@@ -78,7 +79,7 @@ public class ListaPrecoServiceImpl implements ListaPrecoService {
 
         List<SubsidiaryEntity> listaFiliais = new ArrayList<>();
         listaPreco.getFiliais()
-                .forEach(idFilial -> listaFiliais.add(filialService.findSubsidiaryById(idFilial)));
+                .forEach(idFilial -> listaFiliais.add(subsidiaryServicePort.findSubsidiaryById(idFilial)));
 
         ItemListaPrecoValidator.validateExistingItem(listaFiliais, itemListaPreco.getItens());
 

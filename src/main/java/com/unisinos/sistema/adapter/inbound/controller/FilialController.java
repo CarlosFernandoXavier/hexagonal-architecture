@@ -1,11 +1,11 @@
 package com.unisinos.sistema.adapter.inbound.controller;
 
-import com.unisinos.sistema.adapter.inbound.configuration.SwaggerConfiguration;
+import com.unisinos.sistema.adapter.configuration.SwaggerConfiguration;
 import com.unisinos.sistema.adapter.inbound.exceptionhandler.ErrorMessage;
 import com.unisinos.sistema.adapter.inbound.model.request.FilialRequest;
 import com.unisinos.sistema.adapter.inbound.model.request.SubsidiaryItemRequest;
 import com.unisinos.sistema.application.domain.Filial;
-import com.unisinos.sistema.application.port.FilialService;
+import com.unisinos.sistema.application.port.SubsidiaryServicePort;
 import io.swagger.annotations.*;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,7 +21,7 @@ import java.util.List;
 @AllArgsConstructor
 public class FilialController {
 
-    private FilialService filialService;
+    private SubsidiaryServicePort subsidiaryServicePort;
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
@@ -34,7 +34,7 @@ public class FilialController {
     public List<Filial> getSubsidiary(
             @ApiParam(name = "id", value = "Id filial", example = "4")
             @RequestParam(required = false) Integer id) {
-        return filialService.getSubsidiary(id);
+        return subsidiaryServicePort.getSubsidiary(id);
     }
 
     @PostMapping
@@ -45,7 +45,7 @@ public class FilialController {
     })
 
     public Filial createSubsidiary(@RequestBody @NotNull @Valid FilialRequest filialRequest) {
-        return filialService.createSubsidiary(filialRequest);
+        return subsidiaryServicePort.createSubsidiary(filialRequest);
     }
 
     @PostMapping("item")
@@ -55,6 +55,6 @@ public class FilialController {
             @ApiResponse(code = 200, message = "OK", response = Filial.class)
     })
     public Filial addItens(@RequestBody @NotNull SubsidiaryItemRequest subsidiaryItemRequest) {
-        return filialService.addItem(subsidiaryItemRequest);
+        return subsidiaryServicePort.addItem(subsidiaryItemRequest);
     }
 }

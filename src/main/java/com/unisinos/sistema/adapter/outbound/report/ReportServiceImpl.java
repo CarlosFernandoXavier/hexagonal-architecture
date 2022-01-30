@@ -11,8 +11,8 @@ import com.itextpdf.layout.property.TextAlignment;
 import com.itextpdf.layout.property.UnitValue;
 import com.unisinos.sistema.adapter.inbound.mapper.FilialMapper;
 import com.unisinos.sistema.adapter.inbound.model.FilialModel;
-import com.unisinos.sistema.application.port.FilialService;
-import com.unisinos.sistema.application.port.ReportService;
+import com.unisinos.sistema.application.port.SubsidiaryServicePort;
+import com.unisinos.sistema.application.port.ReportServicePort;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -28,15 +28,15 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-public class ReportServiceImpl implements ReportService {
+public class ReportServiceImpl implements ReportServicePort {
 
-    private FilialService filialService;
+    private SubsidiaryServicePort subsidiaryServicePort;
 
     public File createSubsidiaryReport() {
 
         try {
 
-            List<FilialModel> filiais = FilialMapper.mapToModelList(filialService.findAllSubsidiaries());
+            List<FilialModel> filiais = FilialMapper.mapToModelList(subsidiaryServicePort.findAllSubsidiaries());
 
             String pasta = "pdf";
             Path path = Paths.get(FileSystemView.getFileSystemView()

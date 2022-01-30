@@ -8,7 +8,7 @@ import com.unisinos.sistema.adapter.outbound.entity.ListaPrecoEntity;
 
 import java.util.List;
 
-public interface ListaPrecoService {
+public interface PriceListServicePort {
     ListaPreco addPriceList(ListaPrecoRequest listaPrecoRequest);
 
     List<ListaPreco> getPriceList(Integer idList);

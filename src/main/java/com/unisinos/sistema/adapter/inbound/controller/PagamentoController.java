@@ -1,13 +1,13 @@
 package com.unisinos.sistema.adapter.inbound.controller;
 
-import com.unisinos.sistema.adapter.inbound.configuration.SwaggerConfiguration;
+import com.unisinos.sistema.adapter.configuration.SwaggerConfiguration;
 import com.unisinos.sistema.adapter.inbound.exceptionhandler.ErrorMessage;
 import com.unisinos.sistema.adapter.inbound.model.request.PagamentoRequest;
 import com.unisinos.sistema.adapter.inbound.model.request.PagamentoUpdateRequest;
 import com.unisinos.sistema.application.domain.ListaPreco;
 import com.unisinos.sistema.application.domain.Pagamento;
 import com.unisinos.sistema.adapter.outbound.entity.PagamentoEntity;
-import com.unisinos.sistema.application.port.PagamentoService;
+import com.unisinos.sistema.application.port.PaymentServicePort;
 import io.swagger.annotations.*;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,7 +22,7 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 public class PagamentoController {
 
-    private PagamentoService pagamentoService;
+    private PaymentServicePort paymentServicePort;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -34,7 +34,7 @@ public class PagamentoController {
     })
 
     public Pagamento payment(@RequestBody @NotNull @Valid PagamentoRequest pagamentoRequest) {
-        return pagamentoService.payment(pagamentoRequest);
+        return paymentServicePort.payment(pagamentoRequest);
     }
 
     @DeleteMapping
@@ -47,7 +47,7 @@ public class PagamentoController {
 
     public void payment(@NotNull @ApiParam(name = "id", value = "Id do registro de pagamento")
                             @RequestParam Integer id) {
-        pagamentoService.deletePayment(id);
+        paymentServicePort.deletePayment(id);
     }
 
     @GetMapping
@@ -61,7 +61,7 @@ public class PagamentoController {
     public PagamentoEntity findPaymentById(
             @ApiParam(name = "id", value = "Id do registro de pagamento")
             @RequestParam Integer id) {
-        return pagamentoService.findPaymentById(id);
+        return paymentServicePort.findPaymentById(id);
     }
 
     @PatchMapping
@@ -75,6 +75,6 @@ public class PagamentoController {
     })
 
     public Pagamento updatePayment(@RequestBody @NotNull @Valid PagamentoUpdateRequest pagamento) {
-        return pagamentoService.updatePayment(pagamento);
+        return paymentServicePort.updatePayment(pagamento);
     }
 }

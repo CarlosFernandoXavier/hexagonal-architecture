@@ -1,7 +1,7 @@
 package com.unisinos.sistema.adapter.inbound.controller;
 
-import com.unisinos.sistema.adapter.inbound.configuration.SwaggerConfiguration;
-import com.unisinos.sistema.application.port.ReportService;
+import com.unisinos.sistema.adapter.configuration.SwaggerConfiguration;
+import com.unisinos.sistema.application.port.ReportServicePort;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
@@ -27,7 +27,7 @@ import java.io.FileNotFoundException;
 @AllArgsConstructor
 public class RelatorioController {
 
-    private ReportService reportService;
+    private ReportServicePort reportServicePort;
 
     @GetMapping(value = "/estoque", produces = MediaType.APPLICATION_PDF_VALUE)
     @ResponseStatus(HttpStatus.OK)
@@ -36,7 +36,7 @@ public class RelatorioController {
 
         try {
 
-            File file = reportService.createSubsidiaryReport();
+            File file = reportServicePort.createSubsidiaryReport();
             InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
 
             var headers = new HttpHeaders();

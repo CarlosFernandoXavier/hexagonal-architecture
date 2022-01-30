@@ -1,11 +1,11 @@
 package com.unisinos.sistema.adapter.inbound.controller;
 
-import com.unisinos.sistema.adapter.inbound.configuration.SwaggerConfiguration;
+import com.unisinos.sistema.adapter.configuration.SwaggerConfiguration;
 import com.unisinos.sistema.adapter.inbound.exceptionhandler.ErrorMessage;
 import com.unisinos.sistema.adapter.inbound.model.request.ItensListaPrecoRequest;
 import com.unisinos.sistema.adapter.inbound.model.request.RemoveItemRequest;
 import com.unisinos.sistema.application.domain.ListaPreco;
-import com.unisinos.sistema.application.port.ListaPrecoService;
+import com.unisinos.sistema.application.port.PriceListServicePort;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -23,7 +23,7 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 public class ItemController {
 
-    private ListaPrecoService listaPrecoService;
+    private PriceListServicePort priceListServicePort;
 
     @PostMapping("/adicionar")
     @ResponseStatus(HttpStatus.OK)
@@ -36,7 +36,7 @@ public class ItemController {
     })
 
     public ListaPreco addItem(@RequestBody @NotNull @Valid ItensListaPrecoRequest itensListaPrecoRequest) {
-        return listaPrecoService.addItem(itensListaPrecoRequest);
+        return priceListServicePort.addItem(itensListaPrecoRequest);
     }
 
     @DeleteMapping("/remover")
@@ -49,6 +49,6 @@ public class ItemController {
     })
 
     public ListaPreco removeListItem(@NotNull @Valid @RequestBody RemoveItemRequest removeItemRequest) {
-        return listaPrecoService.removeItem(removeItemRequest);
+        return priceListServicePort.removeItem(removeItemRequest);
     }
 }

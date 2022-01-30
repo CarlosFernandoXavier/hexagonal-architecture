@@ -8,19 +8,20 @@ import com.unisinos.sistema.application.domain.Pagamento;
 import com.unisinos.sistema.adapter.inbound.validator.PagamentoValidator;
 import com.unisinos.sistema.adapter.outbound.repository.PagamentoRepository;
 import com.unisinos.sistema.adapter.outbound.entity.PagamentoEntity;
-import com.unisinos.sistema.application.port.PagamentoService;
+import com.unisinos.sistema.application.port.PaymentServicePort;
 import com.unisinos.sistema.application.port.SequenceRepositoryPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 
-public class PagamentoServiceImpl implements PagamentoService {
+public class PaymentServiceImpl implements PaymentServicePort {
 
+    //TODO change the pagamentoRepository so that the implementation switches to the adapter layer
     private PagamentoRepository pagamentoRepository;
     private SequenceRepositoryPort sequenceRepositoryPortImpl;
 
-    public PagamentoServiceImpl(PagamentoRepository pagamentoRepository, SequenceRepositoryPort sequenceRepositoryPort) {
+    public PaymentServiceImpl(PagamentoRepository pagamentoRepository, SequenceRepositoryPort sequenceRepositoryPort) {
         this.pagamentoRepository = pagamentoRepository;
         this.sequenceRepositoryPortImpl = sequenceRepositoryPort;
     }
