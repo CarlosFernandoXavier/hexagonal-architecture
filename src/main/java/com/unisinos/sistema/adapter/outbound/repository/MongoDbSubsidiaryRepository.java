@@ -9,7 +9,7 @@ import java.util.List;
 
 @Component
 @AllArgsConstructor
-public class MongoDbRepository implements SubsidiaryRepositoryPort {
+public class MongoDbSubsidiaryRepository implements SubsidiaryRepositoryPort {
     private FilialRepository filialRepository;
 
     @Override
