@@ -4,10 +4,10 @@ import com.unisinos.sistema.adapter.inbound.mapper.ItemMapper;
 import com.unisinos.sistema.adapter.inbound.mapper.PagamentoMapper;
 import com.unisinos.sistema.adapter.inbound.model.request.PagamentoRequest;
 import com.unisinos.sistema.adapter.inbound.model.request.PagamentoUpdateRequest;
-import com.unisinos.sistema.application.domain.Pagamento;
 import com.unisinos.sistema.adapter.inbound.validator.PagamentoValidator;
-import com.unisinos.sistema.adapter.outbound.repository.PagamentoRepository;
 import com.unisinos.sistema.adapter.outbound.entity.PagamentoEntity;
+import com.unisinos.sistema.application.domain.Pagamento;
+import com.unisinos.sistema.application.port.PaymentRepositoryPort;
 import com.unisinos.sistema.application.port.PaymentServicePort;
 import com.unisinos.sistema.application.port.SequenceRepositoryPort;
 import org.springframework.http.HttpStatus;
@@ -17,11 +17,10 @@ import java.util.Optional;
 
 public class PaymentServiceImpl implements PaymentServicePort {
 
-    //TODO change the pagamentoRepository so that the implementation switches to the adapter layer
-    private PagamentoRepository pagamentoRepository;
+    private PaymentRepositoryPort pagamentoRepository;
     private SequenceRepositoryPort sequenceRepositoryPortImpl;
 
-    public PaymentServiceImpl(PagamentoRepository pagamentoRepository, SequenceRepositoryPort sequenceRepositoryPort) {
+    public PaymentServiceImpl(PaymentRepositoryPort pagamentoRepository, SequenceRepositoryPort sequenceRepositoryPort) {
         this.pagamentoRepository = pagamentoRepository;
         this.sequenceRepositoryPortImpl = sequenceRepositoryPort;
     }
