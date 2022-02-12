@@ -19,16 +19,24 @@ public class SequenceRepository implements SequenceRepositoryPort {
     private MongoOperations mongoOperations;
 
     public Integer getSequence(String sequenceName) {
-        //Get a database sequence
-        Query query = new Query(Criteria.where("id").is(sequenceName));
-        //Update the sequence
-        Update update = new Update().inc("sequence", 1);
-        //Change the db_sequence document
-        SequenceEntity contador = mongoOperations
-                .findAndModify(query,
-                        update, options().returnNew(true).upsert(true),
-                        SequenceEntity.class);
 
-        return !Objects.isNull(contador) ? contador.getSequence() : 1;
+        Query query = getDatabaseSequence(sequenceName);
+        Update update = updateSequence();
+        SequenceEntity counter = changeDBSequenceDocument(query, update);
+
+        return !Objects.isNull(counter) ? counter.getSequence() : 1;
+    }
+
+    private Query getDatabaseSequence(String sequence) {
+        return new Query(Criteria.where("id").is(sequence));
+    }
+
+    private Update updateSequence() {
+        return new Update().inc("sequence", 1);
+    }
+
+    private SequenceEntity changeDBSequenceDocument(Query query, Update update) {
+        return mongoOperations.findAndModify(query, update, options()
+                .returnNew(true).upsert(true), SequenceEntity.class);
     }
 }
