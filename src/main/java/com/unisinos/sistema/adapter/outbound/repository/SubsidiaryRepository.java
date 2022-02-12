@@ -5,6 +5,6 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface FilialRepository extends MongoRepository<SubsidiaryEntity, Integer> {
+public interface SubsidiaryRepository extends MongoRepository<SubsidiaryEntity, Integer> {
     SubsidiaryEntity getById(Integer id);
 }

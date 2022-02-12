@@ -19,16 +19,16 @@ import java.util.Optional;
 
 public class SubsidiaryServiceImpl implements SubsidiaryServicePort {
 
-    private SubsidiaryRepositoryPort filialRepository;
+    private SubsidiaryRepositoryPort filialRepositoryPort;
     private SequenceRepositoryPort sequenceRepositoryPort;
 
-    public SubsidiaryServiceImpl(SubsidiaryRepositoryPort filialRepository, SequenceRepositoryPort sequenceRepositoryPort) {
-        this.filialRepository = filialRepository;
+    public SubsidiaryServiceImpl(SubsidiaryRepositoryPort filialRepositoryPort, SequenceRepositoryPort sequenceRepositoryPort) {
+        this.filialRepositoryPort = filialRepositoryPort;
         this.sequenceRepositoryPort = sequenceRepositoryPort;
     }
 
     public List<SubsidiaryEntity> findAllSubsidiaries() {
-        return filialRepository.findAll();
+        return filialRepositoryPort.findAll();
     }
 
     public List<Filial> getSubsidiary(Integer id) {
@@ -42,21 +42,21 @@ public class SubsidiaryServiceImpl implements SubsidiaryServicePort {
     }
 
     public SubsidiaryEntity findSubsidiaryById(Integer id) {
-        return Optional.ofNullable(filialRepository.getById(id))
+        return Optional.ofNullable(filialRepositoryPort.getById(id))
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                         String.format("Filial com o id: %d, não foi encontrada", id)));
     }
 
     public Filial createSubsidiary(FilialRequest filialRequest) {
-        return FilialMapper.mapToResponse(filialRepository.save(FilialMapper
+        return FilialMapper.mapToResponse(filialRepositoryPort.save(FilialMapper
                 .mapToEntity(filialRequest, sequenceRepositoryPort.getSequence("filial_sequence"))));
     }
 
     public Filial addItem(SubsidiaryItemRequest subsidiaryItemRequest) {
-        SubsidiaryEntity subsidiary = filialRepository.getById(subsidiaryItemRequest.getSubsidiaryId());
+        SubsidiaryEntity subsidiary = filialRepositoryPort.getById(subsidiaryItemRequest.getSubsidiaryId());
         subsidiaryItemRequest.getItens().forEach(item -> {
             subsidiary.getItens().add(ItemEstoqueMapper.mapToEntity(item));
         });
-        return FilialMapper.mapToResponse(filialRepository.save(subsidiary));
+        return FilialMapper.mapToResponse(filialRepositoryPort.save(subsidiary));
     }
 }

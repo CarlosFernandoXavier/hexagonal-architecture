@@ -3,7 +3,7 @@ package com.unisinos.sistema.adapter.inbound.mapper;
 import com.unisinos.sistema.adapter.inbound.model.request.ListaPrecoRequest;
 import com.unisinos.sistema.adapter.outbound.builder.PriceListBuilder;
 import com.unisinos.sistema.application.domain.ListaPreco;
-import com.unisinos.sistema.adapter.outbound.entity.ListaPrecoEntity;
+import com.unisinos.sistema.adapter.outbound.entity.PriceListEntity;
 import org.springframework.util.ObjectUtils;
 
 import java.util.List;
@@ -11,10 +11,10 @@ import java.util.stream.Collectors;
 
 public class ListaPrecoMapper {
 
-    public static ListaPrecoEntity mapToEntity(ListaPrecoRequest listaPrecoRequest, Integer sequence) {
+    public static PriceListEntity mapToEntity(ListaPrecoRequest listaPrecoRequest, Integer sequence) {
         if (ObjectUtils.isEmpty(listaPrecoRequest)) return null;
 
-        return ListaPrecoEntity.builder()
+        return PriceListEntity.builder()
                 .id(sequence)
                 .nome(listaPrecoRequest.getNome())
                 .dataInicial(listaPrecoRequest.getDataInicial())
@@ -24,19 +24,19 @@ public class ListaPrecoMapper {
                 .build();
     }
 
-    public static ListaPreco mapToResponse(ListaPrecoEntity listaPrecoEntity) {
-        if (ObjectUtils.isEmpty(listaPrecoEntity)) return null;
+    public static ListaPreco mapToResponse(PriceListEntity priceListEntity) {
+        if (ObjectUtils.isEmpty(priceListEntity)) return null;
 
         return PriceListBuilder.builder()
-                .id(listaPrecoEntity.getId())
-                .nome(listaPrecoEntity.getNome())
-                .dataInicial(listaPrecoEntity.getDataInicial())
-                .dataFinal(listaPrecoEntity.getDataFinal())
-                .filiais(listaPrecoEntity.getFiliais())
-                .itens(ItemMapper.mapToResponseList(listaPrecoEntity.getItens()))
+                .id(priceListEntity.getId())
+                .nome(priceListEntity.getNome())
+                .dataInicial(priceListEntity.getDataInicial())
+                .dataFinal(priceListEntity.getDataFinal())
+                .filiais(priceListEntity.getFiliais())
+                .itens(ItemMapper.mapToResponseList(priceListEntity.getItens()))
                 .build();
     }
-    public static List<ListaPreco> mapToResponseList(List<ListaPrecoEntity> listaPreco) {
+    public static List<ListaPreco> mapToResponseList(List<PriceListEntity> listaPreco) {
         if (ObjectUtils.isEmpty(listaPreco)) return List.of();
 
         return listaPreco.stream()

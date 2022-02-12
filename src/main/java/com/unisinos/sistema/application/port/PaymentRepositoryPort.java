@@ -1,11 +1,11 @@
 package com.unisinos.sistema.application.port;
 
-import com.unisinos.sistema.adapter.outbound.entity.PagamentoEntity;
+import com.unisinos.sistema.adapter.outbound.entity.PaymentEntity;
 
 public interface PaymentRepositoryPort {
-    PagamentoEntity save(PagamentoEntity pagamentoEntity);
+    PaymentEntity save(PaymentEntity paymentEntity);
 
-    PagamentoEntity getById(Integer id);
+    PaymentEntity getById(Integer id);
 
     void deleteById(Integer id);
 }

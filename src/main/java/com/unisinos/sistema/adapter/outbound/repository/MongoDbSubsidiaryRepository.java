@@ -10,20 +10,20 @@ import java.util.List;
 @Component
 @AllArgsConstructor
 public class MongoDbSubsidiaryRepository implements SubsidiaryRepositoryPort {
-    private FilialRepository filialRepository;
+    private SubsidiaryRepository subsidiaryRepository;
 
     @Override
     public List<SubsidiaryEntity> findAll() {
-        return filialRepository.findAll();
+        return subsidiaryRepository.findAll();
     }
 
     @Override
     public SubsidiaryEntity getById(Integer id) {
-        return filialRepository.getById(id);
+        return subsidiaryRepository.getById(id);
     }
 
     @Override
     public SubsidiaryEntity save(SubsidiaryEntity subsidiaryEntity) {
-        return filialRepository.save(subsidiaryEntity);
+        return subsidiaryRepository.save(subsidiaryEntity);
     }
 }

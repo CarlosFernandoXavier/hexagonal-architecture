@@ -5,7 +5,7 @@ import com.unisinos.sistema.adapter.inbound.mapper.PagamentoMapper;
 import com.unisinos.sistema.adapter.inbound.model.request.PagamentoRequest;
 import com.unisinos.sistema.adapter.inbound.model.request.PagamentoUpdateRequest;
 import com.unisinos.sistema.adapter.inbound.validator.PagamentoValidator;
-import com.unisinos.sistema.adapter.outbound.entity.PagamentoEntity;
+import com.unisinos.sistema.adapter.outbound.entity.PaymentEntity;
 import com.unisinos.sistema.application.domain.Pagamento;
 import com.unisinos.sistema.application.port.PaymentRepositoryPort;
 import com.unisinos.sistema.application.port.PaymentServicePort;
@@ -17,32 +17,32 @@ import java.util.Optional;
 
 public class PaymentServiceImpl implements PaymentServicePort {
 
-    private PaymentRepositoryPort pagamentoRepository;
-    private SequenceRepositoryPort sequenceRepositoryPortImpl;
+    private PaymentRepositoryPort paymentRespositoryPort;
+    private SequenceRepositoryPort sequenceRepositoryPort;
 
-    public PaymentServiceImpl(PaymentRepositoryPort pagamentoRepository, SequenceRepositoryPort sequenceRepositoryPort) {
-        this.pagamentoRepository = pagamentoRepository;
-        this.sequenceRepositoryPortImpl = sequenceRepositoryPort;
+    public PaymentServiceImpl(PaymentRepositoryPort paymentRespositoryPort, SequenceRepositoryPort sequenceRepositoryPort) {
+        this.paymentRespositoryPort = paymentRespositoryPort;
+        this.sequenceRepositoryPort = sequenceRepositoryPort;
     }
 
     public Pagamento payment(PagamentoRequest pagamentoRequest) {
 
         PagamentoValidator.validateItemValue(pagamentoRequest.getItens(), pagamentoRequest.getValorTotal());
         PagamentoValidator.validateCupomValue(pagamentoRequest.getValorCupom(), pagamentoRequest.getValorTotal());
-        PagamentoEntity pagamentoEntity = PagamentoMapper
-                .mapToEntity(pagamentoRequest, sequenceRepositoryPortImpl.getSequence("pagamento_sequence"));
+        PaymentEntity paymentEntity = PagamentoMapper
+                .mapToEntity(pagamentoRequest, sequenceRepositoryPort.getSequence("pagamento_sequence"));
 
-        return PagamentoMapper.mapToResponse(pagamentoRepository.save(pagamentoEntity));
+        return PagamentoMapper.mapToResponse(paymentRespositoryPort.save(paymentEntity));
     }
 
     public void deletePayment(Integer id) {
         Optional.ofNullable(findPaymentById(id))
-                .map(PagamentoEntity::getId)
-                .ifPresent(pagamentoRepository::deleteById);
+                .map(PaymentEntity::getId)
+                .ifPresent(paymentRespositoryPort::deleteById);
     }
 
-    public PagamentoEntity findPaymentById(Integer id) {
-        return Optional.ofNullable(pagamentoRepository.getById(id))
+    public PaymentEntity findPaymentById(Integer id) {
+        return Optional.ofNullable(paymentRespositoryPort.getById(id))
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                         String.format("Pagamento com o id: %d, não foi encontrado", id)));
     }
@@ -52,18 +52,18 @@ public class PaymentServiceImpl implements PaymentServicePort {
         PagamentoValidator.validateItemValue(pagamento.getItens(), pagamento.getValorTotal());
         PagamentoValidator.validateCupomValue(pagamento.getValorCupom(), pagamento.getValorTotal());
 
-        PagamentoEntity pagamentoEntity = findPaymentById(pagamento.getId());
+        PaymentEntity paymentEntity = findPaymentById(pagamento.getId());
 
-        pagamentoEntity = updatePaymentFields(pagamentoEntity, pagamento);
+        paymentEntity = updatePaymentFields(paymentEntity, pagamento);
 
-        return PagamentoMapper.mapToResponse(pagamentoRepository.save(pagamentoEntity));
+        return PagamentoMapper.mapToResponse(paymentRespositoryPort.save(paymentEntity));
     }
 
-    private PagamentoEntity updatePaymentFields(PagamentoEntity pagamentoEntity, PagamentoUpdateRequest pagamento) {
-        pagamentoEntity.setData(pagamentoEntity.getData());
-        pagamentoEntity.setFormaPagamento(pagamento.getFormaPagamento().getCodigo());
-        pagamentoEntity.setItens(ItemMapper.mapToEntityList(pagamento.getItens()));
-        pagamentoEntity.setValorTotal(pagamento.getValorTotal());
-        return pagamentoEntity;
+    private PaymentEntity updatePaymentFields(PaymentEntity paymentEntity, PagamentoUpdateRequest pagamento) {
+        paymentEntity.setData(paymentEntity.getData());
+        paymentEntity.setFormaPagamento(pagamento.getFormaPagamento().getCodigo());
+        paymentEntity.setItens(ItemMapper.mapToEntityList(pagamento.getItens()));
+        paymentEntity.setValorTotal(pagamento.getValorTotal());
+        return paymentEntity;
     }
 }

@@ -1,7 +1,7 @@
 package com.unisinos.sistema.adapter.inbound.mapper;
 
 import com.unisinos.sistema.adapter.inbound.model.request.PagamentoRequest;
-import com.unisinos.sistema.adapter.outbound.entity.PagamentoEntity;
+import com.unisinos.sistema.adapter.outbound.entity.PaymentEntity;
 import com.unisinos.sistema.adapter.outbound.builder.PaymentBuilder;
 import com.unisinos.sistema.application.domain.Pagamento;
 import com.unisinos.sistema.application.enumeration.FormaPagamentoEnum;
@@ -11,10 +11,10 @@ import java.time.LocalDateTime;
 
 public class PagamentoMapper {
 
-    public static PagamentoEntity mapToEntity(PagamentoRequest pagamentoRequest, Integer id) {
+    public static PaymentEntity mapToEntity(PagamentoRequest pagamentoRequest, Integer id) {
         if (ObjectUtils.isEmpty(pagamentoRequest)) return null;
 
-        return PagamentoEntity.builder()
+        return PaymentEntity.builder()
                 .id(id)
                 .data(LocalDateTime.now())
                 .formaPagamento(pagamentoRequest.getFormaPagamento().getCodigo())
@@ -23,15 +23,15 @@ public class PagamentoMapper {
                 .build();
     }
 
-    public static Pagamento mapToResponse(PagamentoEntity pagamentoEntity) {
-        if (ObjectUtils.isEmpty(pagamentoEntity)) return null;
+    public static Pagamento mapToResponse(PaymentEntity paymentEntity) {
+        if (ObjectUtils.isEmpty(paymentEntity)) return null;
 
         return PaymentBuilder.builder()
-                .id(pagamentoEntity.getId())
-                .data(pagamentoEntity.getData())
-                .formaPagamento(FormaPagamentoEnum.getByCode(pagamentoEntity.getFormaPagamento()))
-                .itens(ItemMapper.mapToResponseList(pagamentoEntity.getItens()))
-                .valorTotal(pagamentoEntity.getValorTotal())
+                .id(paymentEntity.getId())
+                .data(paymentEntity.getData())
+                .formaPagamento(FormaPagamentoEnum.getByCode(paymentEntity.getFormaPagamento()))
+                .itens(ItemMapper.mapToResponseList(paymentEntity.getItens()))
+                .valorTotal(paymentEntity.getValorTotal())
                 .build();
     }
 }

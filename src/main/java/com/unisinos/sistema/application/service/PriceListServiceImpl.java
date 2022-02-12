@@ -8,7 +8,7 @@ import com.unisinos.sistema.adapter.inbound.model.request.RemoveItemRequest;
 import com.unisinos.sistema.adapter.inbound.validator.ItemListaPrecoValidator;
 import com.unisinos.sistema.adapter.inbound.validator.ListaPrecoValidator;
 import com.unisinos.sistema.adapter.outbound.entity.ItemEntity;
-import com.unisinos.sistema.adapter.outbound.entity.ListaPrecoEntity;
+import com.unisinos.sistema.adapter.outbound.entity.PriceListEntity;
 import com.unisinos.sistema.adapter.outbound.entity.SubsidiaryEntity;
 import com.unisinos.sistema.application.domain.ListaPreco;
 import com.unisinos.sistema.application.port.PriceListRepositoryPort;
@@ -29,14 +29,14 @@ import static com.unisinos.sistema.adapter.inbound.validator.ItemValidator.valid
 
 public class PriceListServiceImpl implements PriceListServicePort {
 
-    private PriceListRepositoryPort priceListPortImpl;
-    private SequenceRepositoryPort sequenceRepositoryPortImpl;
+    private PriceListRepositoryPort priceListPort;
+    private SequenceRepositoryPort sequenceRepositoryPort;
     private SubsidiaryServicePort subsidiaryServicePort;
 
-    public PriceListServiceImpl(PriceListRepositoryPort priceListPortImpl, SequenceRepositoryPort sequenceRepositoryPort,
+    public PriceListServiceImpl(PriceListRepositoryPort priceListPort, SequenceRepositoryPort sequenceRepositoryPort,
                                 SubsidiaryServicePort subsidiaryServicePort) {
-        this.priceListPortImpl = priceListPortImpl;
-        this.sequenceRepositoryPortImpl = sequenceRepositoryPort;
+        this.priceListPort = priceListPort;
+        this.sequenceRepositoryPort = sequenceRepositoryPort;
         this.subsidiaryServicePort = subsidiaryServicePort;
     }
 
@@ -51,30 +51,30 @@ public class PriceListServiceImpl implements PriceListServicePort {
 
         ItemListaPrecoValidator.validateExistingItem(listaFiliais, listaPrecoRequest.getItens());
 
-        Integer sequence = sequenceRepositoryPortImpl.getSequence("lista_preco_sequence");
+        Integer sequence = sequenceRepositoryPort.getSequence("lista_preco_sequence");
         var listaPrecoEntity = ListaPrecoMapper.mapToEntity(listaPrecoRequest, sequence);
 
-        return ListaPrecoMapper.mapToResponse(priceListPortImpl.save(listaPrecoEntity));
+        return ListaPrecoMapper.mapToResponse(priceListPort.save(listaPrecoEntity));
     }
 
     public List<ListaPreco> getPriceList(Integer idList) {
         List<ListaPreco> lista = new ArrayList<>();
         if (Objects.isNull(idList)) {
-            lista.addAll((ListaPrecoMapper.mapToResponseList(priceListPortImpl.findAll())));
+            lista.addAll((ListaPrecoMapper.mapToResponseList(priceListPort.findAll())));
         } else {
             lista.add(ListaPrecoMapper.mapToResponse(findPriceListById(idList)));
         }
         return lista;
     }
 
-    public ListaPrecoEntity findPriceListById(Integer idList) {
-        return Optional.ofNullable(priceListPortImpl.getById(idList))
+    public PriceListEntity findPriceListById(Integer idList) {
+        return Optional.ofNullable(priceListPort.getById(idList))
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                         String.format("Lista de preço com o id = %d, não existe", idList)));
     }
 
     public ListaPreco addItem(ItensListaPrecoRequest itemListaPreco) {
-        ListaPrecoEntity listaPreco = findPriceListById(itemListaPreco.getIdPriceList());
+        PriceListEntity listaPreco = findPriceListById(itemListaPreco.getIdPriceList());
 
         List<SubsidiaryEntity> listaFiliais = new ArrayList<>();
         listaPreco.getFiliais()
@@ -87,7 +87,7 @@ public class PriceListServiceImpl implements PriceListServicePort {
             listaPreco.getItens().add(ItemMapper.mapToEntity(itemRequest));
         });
 
-        return ListaPrecoMapper.mapToResponse(priceListPortImpl.save(listaPreco));
+        return ListaPrecoMapper.mapToResponse(priceListPort.save(listaPreco));
     }
 
     private void validateEqualItem(List<ItemEntity> itensListaPreco,
@@ -103,14 +103,14 @@ public class PriceListServiceImpl implements PriceListServicePort {
     }
 
     public ListaPreco removeItem(RemoveItemRequest removeItemRequest) {
-        ListaPrecoEntity listaPreco = findPriceListById(removeItemRequest.getIdListaPreco());
+        PriceListEntity listaPreco = findPriceListById(removeItemRequest.getIdListaPreco());
         removeItemRequest.getIdItens().forEach(idItem -> validateExistingItem(listaPreco.getItens(), idItem));
 
         listaPreco.setItens(listaPreco.getItens().stream()
                 .filter(itemEntity -> !isPresentItem(itemEntity, removeItemRequest.getIdItens()))
                 .collect(Collectors.toList()));
 
-        return ListaPrecoMapper.mapToResponse(priceListPortImpl.save(listaPreco));
+        return ListaPrecoMapper.mapToResponse(priceListPort.save(listaPreco));
     }
 
     private Boolean isPresentItem(ItemEntity itemEntity, List<String> idItens) {

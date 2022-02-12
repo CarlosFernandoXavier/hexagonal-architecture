@@ -1,13 +1,13 @@
 package com.unisinos.sistema.application.port;
 
-import com.unisinos.sistema.adapter.outbound.entity.ListaPrecoEntity;
+import com.unisinos.sistema.adapter.outbound.entity.PriceListEntity;
 
 import java.util.List;
 
 public interface PriceListRepositoryPort {
-    ListaPrecoEntity save(ListaPrecoEntity listaPrecoEntity);
+    PriceListEntity save(PriceListEntity priceListEntity);
 
-    List<ListaPrecoEntity> findAll();
+    List<PriceListEntity> findAll();
 
-    ListaPrecoEntity getById(Integer id);
+    PriceListEntity getById(Integer id);
 }

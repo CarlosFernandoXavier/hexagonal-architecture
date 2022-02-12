@@ -1,6 +1,6 @@
 package com.unisinos.sistema;
 
-import com.unisinos.sistema.adapter.outbound.repository.ListaPrecoRepository;
+import com.unisinos.sistema.adapter.outbound.repository.PriceListRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -9,7 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class SistemaApplication {
 
     @Autowired
-    ListaPrecoRepository listaPrecoRepository;
+    PriceListRepository priceListRepository;
 
     public static void main(String[] args) {
         System.setProperty("jdk.tls.client.protocols", "TLSv1.2");

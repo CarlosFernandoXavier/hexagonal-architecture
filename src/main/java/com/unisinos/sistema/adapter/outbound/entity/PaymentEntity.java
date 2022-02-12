@@ -8,26 +8,24 @@ import nonapi.io.github.classgraph.json.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Document("listaDePreco")
+@Document("pagamento")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Builder
-public class ListaPrecoEntity {
+public class PaymentEntity {
 
     @Transient
-    private static final String NOME_SEQUENCE = "lista_preco_sequence";
+    private static final String NOME_SEQUENCE = "pagamento_sequence";
 
     @Id
     private Integer id;
-    private String nome;
-    private LocalDateTime dataInicial;
-    private LocalDateTime dataFinal;
+    private LocalDateTime data;
+    private String formaPagamento;
     private List<ItemEntity> itens;
-    private List<Integer> filiais;
-
-
+    private BigDecimal valorTotal;
 }

@@ -6,7 +6,7 @@ import com.unisinos.sistema.adapter.inbound.model.request.PagamentoRequest;
 import com.unisinos.sistema.adapter.inbound.model.request.PagamentoUpdateRequest;
 import com.unisinos.sistema.application.domain.ListaPreco;
 import com.unisinos.sistema.application.domain.Pagamento;
-import com.unisinos.sistema.adapter.outbound.entity.PagamentoEntity;
+import com.unisinos.sistema.adapter.outbound.entity.PaymentEntity;
 import com.unisinos.sistema.application.port.PaymentServicePort;
 import io.swagger.annotations.*;
 import lombok.AllArgsConstructor;
@@ -58,7 +58,7 @@ public class PagamentoController {
             @ApiResponse(code = 404, message = "NOT_FOUND", response = ErrorMessage.class),
     })
 
-    public PagamentoEntity findPaymentById(
+    public PaymentEntity findPaymentById(
             @ApiParam(name = "id", value = "Id do registro de pagamento")
             @RequestParam Integer id) {
         return paymentServicePort.findPaymentById(id);

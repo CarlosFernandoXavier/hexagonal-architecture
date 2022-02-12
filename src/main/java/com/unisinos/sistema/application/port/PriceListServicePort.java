@@ -4,7 +4,7 @@ import com.unisinos.sistema.adapter.inbound.model.request.ItensListaPrecoRequest
 import com.unisinos.sistema.adapter.inbound.model.request.ListaPrecoRequest;
 import com.unisinos.sistema.adapter.inbound.model.request.RemoveItemRequest;
 import com.unisinos.sistema.application.domain.ListaPreco;
-import com.unisinos.sistema.adapter.outbound.entity.ListaPrecoEntity;
+import com.unisinos.sistema.adapter.outbound.entity.PriceListEntity;
 
 import java.util.List;
 
@@ -13,7 +13,7 @@ public interface PriceListServicePort {
 
     List<ListaPreco> getPriceList(Integer idList);
 
-    ListaPrecoEntity findPriceListById(Integer idList);
+    PriceListEntity findPriceListById(Integer idList);
 
     ListaPreco addItem(ItensListaPrecoRequest itemListaPreco);
 
