@@ -5,16 +5,16 @@ import com.unisinos.sistema.adapter.inbound.mapper.ListaPrecoMapper;
 import com.unisinos.sistema.adapter.inbound.model.request.ItensListaPrecoRequest;
 import com.unisinos.sistema.adapter.inbound.model.request.ListaPrecoRequest;
 import com.unisinos.sistema.adapter.inbound.model.request.RemoveItemRequest;
-import com.unisinos.sistema.application.domain.ListaPreco;
 import com.unisinos.sistema.adapter.inbound.validator.ItemListaPrecoValidator;
 import com.unisinos.sistema.adapter.inbound.validator.ListaPrecoValidator;
-import com.unisinos.sistema.adapter.outbound.entity.SubsidiaryEntity;
-import com.unisinos.sistema.adapter.outbound.repository.ListaPrecoRepository;
 import com.unisinos.sistema.adapter.outbound.entity.ItemEntity;
 import com.unisinos.sistema.adapter.outbound.entity.ListaPrecoEntity;
-import com.unisinos.sistema.application.port.SubsidiaryServicePort;
+import com.unisinos.sistema.adapter.outbound.entity.SubsidiaryEntity;
+import com.unisinos.sistema.application.domain.ListaPreco;
+import com.unisinos.sistema.application.port.PriceListRepositoryPort;
 import com.unisinos.sistema.application.port.PriceListServicePort;
 import com.unisinos.sistema.application.port.SequenceRepositoryPort;
+import com.unisinos.sistema.application.port.SubsidiaryServicePort;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -29,14 +29,13 @@ import static com.unisinos.sistema.adapter.inbound.validator.ItemValidator.valid
 
 public class PriceListServiceImpl implements PriceListServicePort {
 
-    //TODO change this listaPrecoRepository so that the implementation switches to adapter layer
-    private ListaPrecoRepository listaPrecoRepository;
+    private PriceListRepositoryPort priceListPortImpl;
     private SequenceRepositoryPort sequenceRepositoryPortImpl;
     private SubsidiaryServicePort subsidiaryServicePort;
 
-    public PriceListServiceImpl(ListaPrecoRepository listaPrecoRepository, SequenceRepositoryPort sequenceRepositoryPort,
+    public PriceListServiceImpl(PriceListRepositoryPort priceListPortImpl, SequenceRepositoryPort sequenceRepositoryPort,
                                 SubsidiaryServicePort subsidiaryServicePort) {
-        this.listaPrecoRepository = listaPrecoRepository;
+        this.priceListPortImpl = priceListPortImpl;
         this.sequenceRepositoryPortImpl = sequenceRepositoryPort;
         this.subsidiaryServicePort = subsidiaryServicePort;
     }
@@ -55,13 +54,13 @@ public class PriceListServiceImpl implements PriceListServicePort {
         Integer sequence = sequenceRepositoryPortImpl.getSequence("lista_preco_sequence");
         var listaPrecoEntity = ListaPrecoMapper.mapToEntity(listaPrecoRequest, sequence);
 
-        return ListaPrecoMapper.mapToResponse(listaPrecoRepository.save(listaPrecoEntity));
+        return ListaPrecoMapper.mapToResponse(priceListPortImpl.save(listaPrecoEntity));
     }
 
     public List<ListaPreco> getPriceList(Integer idList) {
         List<ListaPreco> lista = new ArrayList<>();
         if (Objects.isNull(idList)) {
-            lista.addAll((ListaPrecoMapper.mapToResponseList(listaPrecoRepository.findAll())));
+            lista.addAll((ListaPrecoMapper.mapToResponseList(priceListPortImpl.findAll())));
         } else {
             lista.add(ListaPrecoMapper.mapToResponse(findPriceListById(idList)));
         }
@@ -69,7 +68,7 @@ public class PriceListServiceImpl implements PriceListServicePort {
     }
 
     public ListaPrecoEntity findPriceListById(Integer idList) {
-        return Optional.ofNullable(listaPrecoRepository.getById(idList))
+        return Optional.ofNullable(priceListPortImpl.getById(idList))
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                         String.format("Lista de preço com o id = %d, não existe", idList)));
     }
@@ -88,7 +87,7 @@ public class PriceListServiceImpl implements PriceListServicePort {
             listaPreco.getItens().add(ItemMapper.mapToEntity(itemRequest));
         });
 
-        return ListaPrecoMapper.mapToResponse(listaPrecoRepository.save(listaPreco));
+        return ListaPrecoMapper.mapToResponse(priceListPortImpl.save(listaPreco));
     }
 
     private void validateEqualItem(List<ItemEntity> itensListaPreco,
@@ -111,7 +110,7 @@ public class PriceListServiceImpl implements PriceListServicePort {
                 .filter(itemEntity -> !isPresentItem(itemEntity, removeItemRequest.getIdItens()))
                 .collect(Collectors.toList()));
 
-        return ListaPrecoMapper.mapToResponse(listaPrecoRepository.save(listaPreco));
+        return ListaPrecoMapper.mapToResponse(priceListPortImpl.save(listaPreco));
     }
 
     private Boolean isPresentItem(ItemEntity itemEntity, List<String> idItens) {
